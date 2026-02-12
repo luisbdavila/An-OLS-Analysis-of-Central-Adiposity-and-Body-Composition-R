@@ -125,6 +125,7 @@ install.packages(c("tidyverse", "lmtest", "car"))
 ## 👥 Authors
 
 Veronica Mendes
+
 Luis Mendes
 
 ---
