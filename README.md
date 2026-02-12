@@ -126,5 +126,6 @@ install.packages(c("tidyverse", "lmtest", "car"))
 
 Veronica Mendes
 Luis Mendes
+
 ---
 
