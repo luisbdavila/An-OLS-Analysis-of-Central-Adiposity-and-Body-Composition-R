@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<!--
+Font-awesome icons ie github or twitter
+-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/brands.css" integrity="sha384-n9+6/aSqa9lBidZMRCQHTHKJscPq6NW4pCQBiMmHdUCvPN8ZOg2zJJTkC7WIezWv" crossorigin="anonymous">
+
+<!--
+Google fonts api stuff
+-->
+<link href='https://fonts.googleapis.com/css?family=Calibri' rel='stylesheet'>
+
+
+
+<title> The Tape Measure vs. The Scale - An OLS Analysis of Central Adiposity and Body Composition</title>
+
+
+
+
+
+
+<style>
+@page {
+size: 45in 38in;
+margin: 0;
+padding: 0;
+}
+body {
+margin: 0;
+font-size: 45px;
+width: 45in;
+height: 38in;
+padding: 0;
+text-align: justify;
+font-family: Calibri;
+}
+.poster_wrap {
+width: 45in;
+height: 38in;
+padding: 0cm;
+}
+.title_container {
+width: 45in;
+height: calc(38in * 0.15);
+overflow: hidden;
+background-color: #395b82;
+border: 0 solid #f2f2f2;
+}
+.logo_left {
+float: left;
+width: 10%;
+height: 100%;
+background-color: #395b82;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.logo_right {
+float: right;
+width: 10%;
+height: 100%;
+background-color: #395b82;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.poster_title {
+text-align: center;
+position: relative;
+float: left;
+width: 80%;
+height: 100%;
+color: #FFFFFF;
+top: 50%;
+transform: translateY(-50%);
+-webkit-transform: translateY(-50%);
+}
+#title {
+font-family: Calibri;
+}
+/* unvisited link */
+a:link {
+color: #cc0000;
+}
+.mybreak {
+  break-before: column;
+}
+/* visited link */
+a:visited {
+color: #cc0000;
+}
+
+/* mouse over link */
+a:hover {
+color: #cc0000;
+}
+
+/* selected link */
+a:active {
+color: #cc0000;
+}
+.poster_body {
+-webkit-column-count: 3; /* Chrome, Safari, Opera */
+-moz-column-count: 3; /* Firefox */
+column-count: 3;
+-webkit-column-fill: auto;
+-moz-column-fill: auto;
+column-fill: auto;
+-webkit-column-rule-width: 1mm;
+-moz-column-rule-width: 1mm;
+column-rule-width: 1mm;
+-webkit-column-rule-style: dashed;
+-moz-column-rule-style: dashed;
+column-rule-style: dashed;
+-webkit-column-rule-color: #395b82;
+-moz-column-rule-color: #395b82;
+column-rule-color: #395b82;
+column-gap: 1em;
+padding-left: 0.5em;
+padding-right: 0.5em;
+height: 100%;
+color: #000000
+background-color: #ffffff;
+}
+.poster_title h1 {
+font-size: 75pt;
+margin: 0;
+border: 0;
+font-weight: normal;
+}
+.poster_body_wrap{
+width: calc(45in + 0 + 0);
+height: calc(38in * 0.83);
+padding-top: calc(38in * 0.005);
+padding-bottom: calc(38in * 0.01);
+background-color: #ffffff;
+}
+.poster_title h3 {
+color: #f2f2f2;
+font-size: 50pt;
+margin: 0;
+border: 0;
+font-weight: normal;
+}
+.poster_title h3 > sup {
+  font-size: 35pt;
+  margin-left: 0.02em;
+}
+.poster_title h5 {
+color: #FFFFFF;
+font-size: 35pt;
+margin: 0;
+border: 0;
+font-weight: normal;
+}
+img {
+margin-top: 2cm;
+margin-bottom: 0;
+}
+.section {
+  padding: 0.2em;
+}
+.poster_body h1 {
+text-align: center;
+color: #FFFFFF;
+font-size: 65pt;
+border: 2mm solid #395b82;
+background-color: #395b82;
+border-radius: 4mm 0mm;
+margin-top: 2mm;
+margin-bottom: 2mm;
+font-weight: normal;
+}
+.poster_body h2 {
+color: #000000;
+font-size: 40pt;
+padding-left: 4mm;
+font-weight: normal;
+}
+.span {
+width: 200%;
+}
+/* center align leaflet map,
+from https://stackoverflow.com/questions/52112119/center-leaflet-in-a-rmarkdown-document */
+.html-widget {
+margin: auto;
+position: sticky;
+margin-top: 2cm;
+margin-bottom: 2cm;
+}
+.leaflet.html-widget.html-widget-static-bound.leaflet-container.leaflet-touch.leaflet-fade-anim.leaflet-grab.leaflet-touch-drag.leaflet-touch-zoom {
+position: sticky;
+width: 100%;
+}
+pre.sourceCode.r {
+background-color: #dddddd40;
+border-radius: 4mm;
+padding: 4mm;
+width: 75%;
+/* align-items: center; */
+margin: auto;
+padding-left: 2cm;
+}
+code.sourceCode.r{
+background-color: transparent;
+font-size: 20pt;
+border-radius: 2mm;
+}
+.caption {
+font-size: 25pt;
+}
+.table caption {
+font-size: 25pt;
+padding-bottom: 3mm;
+
+}
+code {
+font-size: 1em;
+font-family: monospace;
+background-color: #f2f2f224;
+color: #395b82;
+padding: 1.2mm;
+border-radius: 2mm;
+}
+.poster_title code {
+font-size: 1em;
+}
+table {
+font-size: 40px;
+margin: auto;
+border-top: 3px solid #666;
+border-bottom: 3px solid #666;
+}
+table thead th {
+border-bottom: 3px solid #ddd;
+}
+td {
+padding: 8px;
+}
+th {
+padding: 15px;
+}
+caption {
+margin-bottom: 10px;
+}
+.poster_body p {
+margin-right: 4mm;
+margin-left: 4mm;
+margin-top: 6mm;
+margin-bottom: 10mm;
+}
+.poster_body ol {
+margin-right: 4mm;
+margin-left: 4mm;
+}
+#ul {
+margin-right: 4mm;
+margin-left: 4mm;
+}
+.references p {
+font-size: 20pt;
+}
+.orcid img {
+  width: 1em;
+}
+</style>
+</head>
+<body>
+
+
+<div class="poster_wrap">
+<div class="title_container">
+<!-- Left Logo  -->
+<div class="logo_left">
+<img src= 'fat.png' style="width: 80%">
+</div>
+<!-- Poster Title -->
+<div class= "poster_title">
+<h1 id="title"><br><b>The Tape Measure vs. The Scale - An OLS Analysis of Central Adiposity and Body Composition</b></h1>
+<h3 id="author">Veronica Mendes 20221945<sup></sup>, Luis Mendes 20221949<sup></sup></h3><br>
+
+</div>
+<!-- Right Logo  -->
+<div class="logo_right">
+<img src=IMS.png style="width: 80%">
+</div>
+</div>
+
+<div class='poster_body_wrap'>
+<div class='poster_body'>
+<style type="text/css">
+div.title_container{border: 40px solid white;
+border-radius: 150px;
+   background-color:#395b82;
+}
+
+div.logo_left{margin-top: -40px;
+margin-left: 70px;
+margin-right: -80px;
+background-color: #395b82;
+}
+div.logo_right{margin-top: -40px;
+margin-left: -80px;
+margin-right: 70px;
+background-color: #395b82;
+}
+.figure {
+  text-align: center;
+  margin-top: -70px;
+}
+.fig-caption {
+  text-align: center;
+  font-style: italic;
+}
+<style>
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+</style>
+</style>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Obesity is a critical public health problem associated with cardiovascular diseases and diabetes, yet the most common diagnostic tool, Body Mass Index (BMI),<sup><a href="https://ufhealth.org/news/2025/uf-health-study-shows-bmis-weakness-as-a-predictor-of-future-health">1,</a> <a href="https://www.yalemedicine.org/news/why-you-shouldnt-rely-on-bmi-alone">2</a></sup> is often criticized for its inability to distinguish between lean muscle mass and adipose tissue. While “gold standard” methods <sup><a href="https://www.wearebod.com/blogs/journal/comparing-hydrostatic-weighing-to-other-body-composition-methods">3</a></sup> like underwater weighing (hydrodensitometry) provide accurate body fat assessments, they are costly, invasive, and require specialized equipment, making them impractical for routine clinical use.</p>
+<p>We wanted to check if simple, low-cost anthropometric measurements could provide a statistically superior prediction of body fat compared to BMI.<sup><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3082527/">4</a></sup> Research suggests that indicators of central adiposity (abdominal circumference) and skeletal frame size (wrist circumference) may offer a more precise estimation of health risk than weight-based metrics alone.</p>
+</div>
+<div id="research-question" class="section level1">
+<h1>Research question</h1>
+<p>“To what extent do central adiposity (Abdominal Circumference) and skeletal frame size (Wrist Circumference) improve the prediction of Body Fat Percentage compared to the standard Body Mass Index (BMI)”</p>
+</div>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<p>We utilized a cross-sectional dataset of 250 men <sup><a href="https://www.kaggle.com/datasets/fedesoriano/body-fat-prediction-dataset/data">5</a></sup>, which includes information on about:</p>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr>
+<th align="left">Feature</th>
+<th align="left">Description</th>
+<th align="left">Unit</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>BodyFat</strong></td>
+<td align="left">quantitative</td>
+<td align="left">Percent body fat from Siri’s (1956) equation <sup><a href="https://www.topendsports.com/testing/siri-equation.htm">6</a></sup></td>
+<td align="left">Target Variable</td>
+</tr>
+<tr>
+<td align="left"><strong>Age</strong></td>
+<td align="left">quantitative</td>
+<td align="left">Age (years)</td>
+<td align="left">Input Variable</td>
+</tr>
+<tr>
+<td align="left"><strong>Weight</strong></td>
+<td align="left">quantitative</td>
+<td align="left">Weight (lbs)</td>
+<td align="left">Input Variable</td>
+</tr>
+<tr>
+<td align="left"><strong>Height</strong></td>
+<td align="left">quantitative</td>
+<td align="left">Height (inches)</td>
+<td align="left">Input Variable</td>
+</tr>
+<tr>
+<td align="left"><strong>Abdomen</strong></td>
+<td align="left">quantitative</td>
+<td align="left">Abdomen 2 circumference (cm)</td>
+<td align="left">Input Variable</td>
+</tr>
+<tr>
+<td align="left"><strong>Wrist</strong></td>
+<td align="left">quantitative</td>
+<td align="left">Wrist circumference (cm)</td>
+<td align="left">Input Variable</td>
+</tr>
+</tbody>
+</table>
+<p>The BMI will be: <span class="math inline">\(BMI = 703 \times \frac{\text{Weight (lbs)}}{\text{Height (inches)}^2}\)</span>.</p>
+</div>
+<div id="methodology" class="section level1">
+<h1>Methodology</h1>
+<p>Given the literature review, we consider the following model:
+<span class="math display">\[
+\begin{aligned}
+BodyFat_i &amp;= \beta_0 + \beta_1 BMI_i + \beta_2 Wrist_i + \beta_3 Abdomen_i + \beta_4 Age_i \\
+&amp;\quad + \beta_5 Abdomen_i^2 + \epsilon_i
+\end{aligned}
+\]</span>
+We included the quadratic term for abdominal circumference (Abdomen^2) because empirical analyses of anthropometric data indicate that the relationship between central adiposity and total body fat percentage is non-linear ; specifically, research suggests that this quadratic transformations provide a superior model fit by capturing the accelerating rate of fat accumulation in higher-risk phenotypes.</p>
+<p>Furthermore, we considered Age as a critical covariate to account for metabolic sarcopenia. Studies consistently demonstrate that, independent of weight or frame size, body density decreases with age due to the natural replacement of lean muscle mass with adipose tissue, necessitating an age-adjustment to prevent the underestimation of fat percentage in older subjects.</p>
+<p>We assessed the validity of the Ordinary Least Squares (OLS) estimators by verifying the Gauss-Markov assumptions. We assume MLR.1 (Linearity in parameters), MLR.2 (Random sampling), and MLR.3 (No perfect collinearity) hold given the study design and data structure. Regarding MLR.6 (Normality of errors), we rely on the central limit theorem given our sufficient sample size (n=250). MLR.4 (Zero conditional mean) is assumed to hold based on prior literature regarding omitted variable bias.</p>
+<p>We will explicitly test for MLR.5 (Homoskedasticity) using the Breusch-Pagan and White’s Special tests to ensure standard errors are valid. Additionally, a Ramsey RESET test will be conducted to verify the functional form specification. Finally, we will interpret the coefficients and their statistical significance to determine if BMI remains a significant predictor of Body Fat Percentage when controlling for abdominal circumference and skeletal frame size (wrist circumference). We will use a statistical significance level of 1% (= 0.01) to ensure robustness and minimize the risk of Type I errors (false positives), providing strong evidence that our predictors have a genuine effect on Body Fat Percentage.</p>
+</div>
+<div id="results" class="section level1">
+<h1>Results</h1>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr>
+<th align="left">Test</th>
+<th align="left">P_Value</th>
+<th align="left">H0</th>
+<th align="left">Conclusion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Breusch-Pagan</td>
+<td align="left">0.9036256</td>
+<td align="left">Homoskedasticity</td>
+<td align="left">Fail to Reject HO, Homoskedasticity</td>
+</tr>
+<tr>
+<td align="left">White Special</td>
+<td align="left">0.7949712</td>
+<td align="left">Homoskedasticity</td>
+<td align="left">Fail to Reject HO, Homoskedasticity</td>
+</tr>
+<tr>
+<td align="left">RESET</td>
+<td align="left">0.0655588</td>
+<td align="left">No Misspecification</td>
+<td align="left">Fail to Reject HO, Correct Functional Form</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math display">\[
+\begin{aligned}
+BodyFat_i &amp;= -63.028 +  0.455BMI_i -2.696Wrist_i \\ &amp;\quad + 1.851Abdomen_i + 0.092Age_i -0.006 Abdomen_i^2
+\end{aligned}
+\]</span></p>
+<table>
+<thead>
+<tr>
+<th align="left">Variable</th>
+<th align="left">Estimate</th>
+<th align="left">P-Value</th>
+<th align="left">Conclusion (at 1% level)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>(Intercept)</strong></td>
+<td align="left">-63.028</td>
+<td align="left">0</td>
+<td align="left">Significant</td>
+</tr>
+<tr>
+<td align="left"><strong>BMI</strong></td>
+<td align="left">0.4547</td>
+<td align="left">0.04</td>
+<td align="left">Not Significant</td>
+</tr>
+<tr>
+<td align="left"><strong>Wrist</strong></td>
+<td align="left">-2.6964</td>
+<td align="left">0</td>
+<td align="left">Significant</td>
+</tr>
+<tr>
+<td align="left"><strong>Abdomen</strong></td>
+<td align="left">1.8512</td>
+<td align="left">0</td>
+<td align="left">Significant</td>
+</tr>
+<tr>
+<td align="left"><strong>Age</strong></td>
+<td align="left">0.0919</td>
+<td align="left">10^{-4}</td>
+<td align="left">Significant</td>
+</tr>
+<tr>
+<td align="left"><strong>Abdomen Sq</strong></td>
+<td align="left">-0.0064</td>
+<td align="left">0</td>
+<td align="left">Significant</td>
+</tr>
+</tbody>
+</table>
+<center>
+<strong>n</strong> = 250, <strong>R<sup>2</sup></strong> = 0.7347962, <strong>Adj R<sup>2</sup></strong> = 0.7293617
+</center>
+<p>The model explains 73.48% of the variability in Body Fat, and after adjusting for the number of predictors (<span class="math inline">\(k=5\)</span>), the fit remains strong.</p>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>This study demonstrates that the inclusion of central adiposity (Abdomen) and skeletal frame size (Wrist) renders BMI statistically non-significant. While the model explained approximately 73% of the variance in body fat (<span class="math inline">\(R^2 \approx 0.73\)</span>), BMI was the only non-significant predictor (<span class="math inline">\(p &gt; 0.01\)</span>) when tested alongside circumferences. This indicates that BMI acts as a crude proxy for size that fails to distinguish between lean mass and fat tissue. Consequently, we conclude that Abdominal circumference and Wrist circumference (which adjusts for skeletal frame) are far superior clinical indicators, making BMI unnecessary for individual body fat estimation when these simple tape measurements are available.</p>
+</div>
+<div id="further-research" class="section level1">
+<h1>Further Research</h1>
+<p>Future studies should validate this model across more diverse demographic groups, particularly women and varying ethnicities, to determine if the redundancy of BMI holds universally. Finally, longitudinal analysis is needed to investigate if monitoring changes in Abdominal and Wrist circumferences over time can accurately track body fat reduction better than simply monitoring weight loss.</p>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<ul>
+<li>1: BMI a poor predictor of future health - UF Health. (n.d.). <a href="https://ufhealth.org/news/2025/uf-health-study-shows-bmis-weakness-as-a-predictor-of-future-health" class="uri">https://ufhealth.org/news/2025/uf-health-study-shows-bmis-weakness-as-a-predictor-of-future-health</a></li>
+<li>2: Katella, K. (2023, August 4). Why you shouldn’t rely on BMI alone. Yale Medicine. <a href="https://www.yalemedicine.org/news/why-you-shouldnt-rely-on-bmi-alone" class="uri">https://www.yalemedicine.org/news/why-you-shouldnt-rely-on-bmi-alone</a></li>
+<li>3: Tayag, C. (2025, October 16). Comparing hydrostatic weighing to other body composition methods. We Are BOD Inc. <a href="https://www.wearebod.com/blogs/journal/comparing-hydrostatic-weighing-to-other-body-composition-methods" class="uri">https://www.wearebod.com/blogs/journal/comparing-hydrostatic-weighing-to-other-body-composition-methods</a></li>
+<li>4: Leitzmann, M. F., Moore, S. C., Koster, A., Harris, T. B., Park, Y., Hollenbeck, A., &amp; Schatzkin, A. (2011). Waist Circumference as Compared with Body-Mass Index in Predicting Mortality from Specific Causes. pmc.ncbi.nlm.nih.gov. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3082527/" class="uri">https://pmc.ncbi.nlm.nih.gov/articles/PMC3082527/</a></li>
+<li>5: Body Fat Prediction Dataset <a href="https://www.kaggle.com/datasets/fedesoriano/body-fat-prediction-dataset/data" class="uri">https://www.kaggle.com/datasets/fedesoriano/body-fat-prediction-dataset/data</a></li>
+<li>6: Wood, R. (1956). Siri Equation Calculator - Body Fat from Body Density. Topend Sports. <a href="https://www.topendsports.com/testing/siri-equation.htm" class="uri">https://www.topendsports.com/testing/siri-equation.htm</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+var script = document.createElement("script");
+script.type = "text/javascript";
+var src = "true";
+if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+if (location.protocol !== "file:" && /^https?:/.test(src))
+src = src.replace(/^https?:/, '');
+script.src = src;
+document.getElementsByTagName("head")[0].appendChild(script);
+})();
+</script>
+
+
+</body>
+</html>

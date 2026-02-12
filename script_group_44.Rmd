@@ -1,0 +1,201 @@
+---
+title: <br><b>The Tape Measure vs. The Scale - An OLS Analysis of Central Adiposity and Body Composition</b>
+author:
+  - name: Veronica Mendes 20221945
+  - name: Luis Mendes 20221949
+column_numbers: 3
+logoright_name: IMS.png
+logoleft_name: fat.png
+output:
+  posterdown::posterdown_html:
+    self_contained: false
+    number_sections: false
+font_family: 'Calibri'
+primary_colour:	'#395b82'
+secondary_colour:	"#f2f2f2"
+---
+```{css, echo=FALSE}
+div.title_container{border: 40px solid white;
+border-radius: 150px;
+   background-color:#395b82;
+}
+
+div.logo_left{margin-top: -40px;
+margin-left: 70px;
+margin-right: -80px;
+background-color: #395b82;
+}
+div.logo_right{margin-top: -40px;
+margin-left: -80px;
+margin-right: 70px;
+background-color: #395b82;
+}
+.figure {
+  text-align: center;
+  margin-top: -70px;
+}
+.fig-caption {
+  text-align: center;
+  font-style: italic;
+}
+<style>
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+</style>
+```
+```{r setup, include=FALSE}
+library(fpp3)
+library(posterdown)
+library(rmarkdown)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Introduction
+
+Obesity is a critical public health problem associated with cardiovascular diseases and diabetes, yet the most common diagnostic tool, Body Mass Index (BMI),<sup>[1,](https://ufhealth.org/news/2025/uf-health-study-shows-bmis-weakness-as-a-predictor-of-future-health) [2](https://www.yalemedicine.org/news/why-you-shouldnt-rely-on-bmi-alone)</sup> is often criticized for its inability to distinguish between lean muscle mass and adipose tissue. While "gold standard" methods <sup>[3](https://www.wearebod.com/blogs/journal/comparing-hydrostatic-weighing-to-other-body-composition-methods)</sup> like underwater weighing (hydrodensitometry) provide accurate body fat assessments, they are costly, invasive, and require specialized equipment, making them impractical for routine clinical use. 
+
+We wanted to check if simple, low-cost anthropometric measurements could provide a statistically superior prediction of body fat compared to BMI.<sup>[4](https://pmc.ncbi.nlm.nih.gov/articles/PMC3082527/)</sup> Research suggests that indicators of central adiposity (abdominal circumference) and skeletal frame size (wrist circumference) may offer a more precise estimation of health risk than weight-based metrics alone.
+
+# Research question
+"To what extent do central adiposity (Abdominal Circumference) and skeletal frame size (Wrist Circumference) improve the prediction of Body Fat Percentage compared to the standard Body Mass Index (BMI)"
+
+# Data
+
+```{r, echo = FALSE, message = FALSE, results = "hide", message = FALSE, warning = FALSE}
+library(lmtest)
+library(dplyr)
+
+#bodyfat <- read.csv("bodyfat.csv")
+#save(bodyfat, file = "data_group_44.RData")
+
+load("data_group_44.RData")
+
+# Create the BMI Variable
+bodyfat_subset <- bodyfat %>%
+  mutate(BMI = 703 * (Weight / Height^2)) %>%
+  select(BodyFat, Age, Abdomen, Wrist, BMI)
+
+sum(is.na(bodyfat_subset))
+# 0 missing values
+
+summary(bodyfat_subset)
+# Impossible 0 bodyfat, and BMI Extremely large
+
+# Filtering
+bodyfat_subset <- bodyfat_subset %>% filter(BodyFat > 0, BMI < 60)
+
+# Number of Rows
+n_obs <- nrow(bodyfat_subset)
+
+# MLRM3: See if exits perfect correlation
+cor(bodyfat_subset,bodyfat_subset)
+# Dont exists
+```
+
+We utilized a cross-sectional dataset of `r n_obs` men <sup>[5](https://www.kaggle.com/datasets/fedesoriano/body-fat-prediction-dataset/data)</sup>, which includes information on about:
+
+| Feature | Description | Unit | Type |
+| :--- | :--- | :--- | :--- |
+| **BodyFat** | quantitative | Percent body fat from Siri's (1956) equation <sup>[6](https://www.topendsports.com/testing/siri-equation.htm)</sup> | Target Variable |
+| **Age** | quantitative | Age (years) | Input Variable |
+| **Weight** | quantitative | Weight (lbs) | Input Variable |
+| **Height** | quantitative | Height (inches) | Input Variable |
+| **Abdomen** | quantitative | Abdomen 2 circumference (cm) | Input Variable |
+| **Wrist** | quantitative | Wrist circumference (cm) | Input Variable |
+
+The BMI will be: $BMI = 703 \times \frac{\text{Weight (lbs)}}{\text{Height (inches)}^2}$.
+
+# Methodology
+
+Given the literature review, we consider the following model:
+$$
+\begin{aligned}
+BodyFat_i &= \beta_0 + \beta_1 BMI_i + \beta_2 Wrist_i + \beta_3 Abdomen_i + \beta_4 Age_i \\
+&\quad + \beta_5 Abdomen_i^2 + \epsilon_i
+\end{aligned}
+$$
+We included the quadratic term for abdominal circumference (Abdomen^2) because empirical analyses of anthropometric data indicate that the relationship between central adiposity and total body fat percentage is non-linear ; specifically, research suggests that this quadratic transformations provide a superior model fit by capturing the accelerating rate of fat accumulation in higher-risk phenotypes. 
+
+Furthermore, we considered Age as a critical covariate to account for metabolic sarcopenia. Studies consistently demonstrate that, independent of weight or frame size, body density decreases with age due to the natural replacement of lean muscle mass with adipose tissue, necessitating an age-adjustment to prevent the underestimation of fat percentage in older subjects.
+ 
+We assessed the validity of the Ordinary Least Squares (OLS) estimators by verifying the Gauss-Markov assumptions. We assume MLR.1 (Linearity in parameters), MLR.2 (Random sampling), and MLR.3 (No perfect collinearity) hold given the study design and data structure. Regarding MLR.6 (Normality of errors), we rely on the central limit theorem given our sufficient sample size (n=250). MLR.4 (Zero conditional mean) is assumed to hold based on prior literature regarding omitted variable bias.
+
+We will explicitly test for MLR.5 (Homoskedasticity) using the Breusch-Pagan and White’s Special tests to ensure standard errors are valid. Additionally, a Ramsey RESET test will be conducted to verify the functional form specification. Finally, we will interpret the coefficients and their statistical significance to determine if BMI remains a significant predictor of Body Fat Percentage when controlling for abdominal circumference and skeletal frame size (wrist circumference). We will use a statistical significance level of 1% (\alpha = 0.01) to ensure robustness and minimize the risk of Type I errors (false positives), providing strong evidence that our predictors have a genuine effect on Body Fat Percentage.
+
+# Results
+
+```{r, echo = FALSE, message = FALSE, results = "hide", message = FALSE, warning = FALSE}
+# Model
+reg <- lm(BodyFat ~ BMI + Wrist + Abdomen + Age + I(Abdomen^2), data=bodyfat_subset)
+
+# Heteroskedacity testing
+  # bp
+bp <- bptest(reg)
+bp
+  # white special
+WS <- bptest(reg,~fitted(reg)+I(fitted(reg)^2))
+WS
+# R: Homoskedasticity
+
+# Misspecification
+RESET_T <- resettest(reg)
+RESET_T
+# Valid
+
+# Conclusion at 1% significance level
+reg_summary <- summary(reg)
+reg_summary
+```
+
+
+|Test | P_Value | H0 | Conclusion |
+| :--- | :--- | :--- | :--- |
+|Breusch-Pagan | `r bp$p.value` | Homoskedasticity | Fail to Reject HO, Homoskedasticity |
+|White Special | `r WS$p.value` | Homoskedasticity | Fail to Reject HO, Homoskedasticity |
+|RESET | `r RESET_T$p.value` | No Misspecification | Fail to Reject HO, Correct Functional Form |
+
+$$
+\begin{aligned}
+BodyFat_i &= `r round(reg_summary$coefficients["(Intercept)", "Estimate"], 3)` +  `r round(reg_summary$coefficients["BMI", "Estimate"],3)`BMI_i `r round(reg_summary$coefficients["Wrist", "Estimate"],3)`Wrist_i \\ &\quad + `r round(reg_summary$coefficients["Abdomen", "Estimate"],3)`Abdomen_i + `r round(reg_summary$coefficients["Age", "Estimate"],3)`Age_i `r round(reg_summary$coefficients["I(Abdomen^2)", "Estimate"],3)` Abdomen_i^2
+\end{aligned}
+$$
+
+| Variable | Estimate | P-Value | Conclusion (at 1% level) |
+| :--- | :--- | :--- | :--- |
+| **(Intercept)** | `r round(reg_summary$coefficients["(Intercept)", "Estimate"], 4)` | `r round(reg_summary$coefficients["(Intercept)", 4], 4)` | `r ifelse(reg_summary$coefficients["(Intercept)", 4] < 0.01, "Significant", "Not Significant")` |
+| **BMI** | `r round(reg_summary$coefficients["BMI", "Estimate"], 4)` | `r round(reg_summary$coefficients["BMI", 4], 4)` | `r ifelse(reg_summary$coefficients["BMI", 4] < 0.01, "Significant", "Not Significant")` |
+| **Wrist** | `r round(reg_summary$coefficients["Wrist", "Estimate"], 4)` | `r round(reg_summary$coefficients["Wrist", 4], 4)` | `r ifelse(reg_summary$coefficients["Wrist", 4] < 0.01, "Significant", "Not Significant")` |
+| **Abdomen** | `r round(reg_summary$coefficients["Abdomen", "Estimate"], 4)` | `r round(reg_summary$coefficients["Abdomen", 4], 4)` | `r ifelse(reg_summary$coefficients["Abdomen", 4] < 0.01, "Significant", "Not Significant")` |
+| **Age** | `r round(reg_summary$coefficients["Age", "Estimate"], 4)` | `r round(reg_summary$coefficients["Age", 4], 4)` | `r ifelse(reg_summary$coefficients["Age", 4] < 0.01, "Significant", "Not Significant")` |
+| **Abdomen Sq** | `r round(reg_summary$coefficients["I(Abdomen^2)", "Estimate"], 4)` | `r round(reg_summary$coefficients["I(Abdomen^2)", 4], 4)` | `r ifelse(reg_summary$coefficients["I(Abdomen^2)", 4] < 0.01, "Significant", "Not Significant")` |
+
+<center>**n** = `r n_obs`, **R<sup>2</sup>** = `r reg_summary$r.squared`, **Adj R<sup>2</sup>** = `r reg_summary$adj.r.squared`</center>
+
+The model explains `r round(reg_summary$r.squared * 100, 2)`% of the variability in Body Fat, and after adjusting for the number of predictors ($k=5$), the fit remains strong.
+
+# Conclusion
+
+This study demonstrates that the inclusion of central adiposity (Abdomen) and skeletal frame size (Wrist) renders BMI statistically non-significant. While the model explained approximately 73% of the variance in body fat ($R^2 \approx 0.73$), BMI was the only non-significant predictor ($p > 0.01$) when tested alongside circumferences. This indicates that BMI acts as a crude proxy for size that fails to distinguish between lean mass and fat tissue. Consequently, we conclude that Abdominal circumference and Wrist circumference (which adjusts for skeletal frame) are far superior clinical indicators, making BMI unnecessary for individual body fat estimation when these simple tape measurements are available.
+
+# Further Research
+
+Future studies should validate this model across more diverse demographic groups, particularly women and varying ethnicities, to determine if the redundancy of BMI holds universally. Finally, longitudinal analysis is needed to investigate if monitoring changes in Abdominal and Wrist circumferences over time can accurately track body fat reduction better than simply monitoring weight loss.
+
+# References
+
++ 1: BMI a poor predictor of future health - UF Health. (n.d.). https://ufhealth.org/news/2025/uf-health-study-shows-bmis-weakness-as-a-predictor-of-future-health
++ 2: Katella, K. (2023, August 4). Why you shouldn’t rely on BMI alone. Yale Medicine. https://www.yalemedicine.org/news/why-you-shouldnt-rely-on-bmi-alone
++ 3: Tayag, C. (2025, October 16). Comparing hydrostatic weighing to other body composition methods. We Are BOD Inc. https://www.wearebod.com/blogs/journal/comparing-hydrostatic-weighing-to-other-body-composition-methods
++ 4: Leitzmann, M. F., Moore, S. C., Koster, A., Harris, T. B., Park, Y., Hollenbeck, A., & Schatzkin, A. (2011). Waist Circumference as Compared with Body-Mass Index in Predicting Mortality from Specific Causes. pmc.ncbi.nlm.nih.gov. https://pmc.ncbi.nlm.nih.gov/articles/PMC3082527/
++ 5: Body Fat Prediction Dataset https://www.kaggle.com/datasets/fedesoriano/body-fat-prediction-dataset/data
++ 6: Wood, R. (1956). Siri Equation Calculator - Body Fat from Body Density. Topend Sports. https://www.topendsports.com/testing/siri-equation.htm
+
