@@ -8,7 +8,7 @@ Using Ordinary Least Squares (OLS) regression and statistical diagnostics, we ev
 
 ---
 
-## 📌 Motivation
+## Motivation
 
 Obesity is a major public health concern linked to cardiovascular disease and diabetes. BMI is widely used as a screening metric, but it cannot distinguish between lean muscle mass and adipose tissue.
 
@@ -16,13 +16,13 @@ Clinical gold-standard techniques for body fat measurement are accurate but cost
 
 ---
 
-## ❓ Research Question
+## Research Question
 
 > *To what extent do central adiposity (abdominal circumference) and skeletal frame size (wrist circumference) improve the prediction of body fat percentage compared to BMI?*
 
 ---
 
-## 📊 Dataset
+## Dataset
 
 We use a cross-sectional dataset of **250 adult men** containing:
 
@@ -43,7 +43,7 @@ The dataset originates from a publicly available body fat prediction dataset.
 
 ---
 
-## 🧠 Methodology
+## Methodology
 
 We estimate the following OLS regression model:
 
@@ -60,7 +60,7 @@ BodyFat = β0 + β1(BMI) + β2(Wrist) + β3(Abdomen)
 
 ---
 
-## 🔬 Statistical Diagnostics
+## Statistical Diagnostics
 
 To validate model assumptions, we performed:
 
@@ -72,7 +72,7 @@ All tests support the validity of the OLS model.
 
 ---
 
-## 📈 Results Summary
+## Results Summary
 
 Key findings:
 
@@ -86,7 +86,7 @@ This indicates BMI acts as a coarse proxy and adds little predictive value when 
 
 ---
 
-## ✅ Conclusion
+## Conclusion
 
 Simple tape measurements — abdominal and wrist circumference — provide a superior prediction of body fat compared to BMI.
 
@@ -96,7 +96,7 @@ These findings support replacing BMI with more direct anthropometric measures in
 
 ---
 
-## ▶ How to Run the Analysis
+## How to Run the Analysis
 
 1. Open the R Markdown script:
 
@@ -114,7 +114,7 @@ install.packages(c("tidyverse", "lmtest", "car"))
 
 ---
 
-## 🔮 Future Work
+## Future Work
 
 * Validate findings across genders and ethnic groups
 * Longitudinal tracking of circumference changes
@@ -122,7 +122,7 @@ install.packages(c("tidyverse", "lmtest", "car"))
 
 ---
 
-## 👥 Authors
+## Authors
 
 Veronica Mendes
 
